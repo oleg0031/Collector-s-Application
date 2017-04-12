@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.olegsmirnov.collectorsapp.UserInputActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Название:"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/edittext_description"
+        android:layout_height="60dp"
+        android:inputType="text"
+        android:maxLength="25"
+        android:width="200dp"
+        android:layout_width="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Примерная стоимость в $:"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/edittext_price"
+        android:layout_width="wrap_content"
+        android:inputType="number"
+        android:maxLength="10"
+        android:width="200dp"
+        android:layout_height="60dp" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
+        android:text="Добавить"/>
+
+</LinearLayout>
