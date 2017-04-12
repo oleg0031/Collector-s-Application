@@ -15,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.realm.Realm;
@@ -28,11 +30,16 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
 
+    private TextView tvHint;
+    private ImageView ivHint;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        tvHint = (TextView) findViewById(R.id.textview_hint);
+        ivHint = (ImageView) findViewById(R.id.imageview_hint);
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -43,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         1);
             }
-            Toast.makeText(this, "Добавляйте предметы в коллекцию с помощью кнопки в нижнем углу!" , Toast.LENGTH_LONG).show();
         }
         realm = Realm.getDefaultInstance();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,14 +76,26 @@ public class MainActivity extends AppCompatActivity {
         realm.close();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (realm.where(Collection.class).count() != 0) {
+            ivHint.setVisibility(View.GONE);
+            tvHint.setVisibility(View.GONE);
+        }
+    }
+
     private void write(Realm realm, final String filePath, final String description, final double price) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                //realm.delete(Collection.class);
                 Collection collection = realm.createObject(Collection.class);
-                collection.setPath(filePath);
                 collection.setDescription(description);
                 collection.setPrice(price);
+                collection.setPath(filePath);
+                ivHint.setVisibility(View.GONE);
+                tvHint.setVisibility(View.GONE);
             }
         });
     }
@@ -104,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 2 && resultCode == 2 && data != null) {
             Log.d("DESCRIPTION", data.getStringExtra("description"));
             write(realm, data.getStringExtra("filePath"), data.getStringExtra("description"), data.getDoubleExtra("price", 0));
+            Toast.makeText(this, "Прeдмет коллекции добавлен!", Toast.LENGTH_SHORT).show();
         }
     }
 }

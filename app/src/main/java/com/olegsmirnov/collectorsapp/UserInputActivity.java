@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class UserInputActivity extends AppCompatActivity {
 
@@ -20,12 +21,16 @@ public class UserInputActivity extends AppCompatActivity {
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra("description", et1.getText().toString());
-                intent.putExtra("price", Double.parseDouble(et2.getText().toString()));
-                intent.putExtra("filePath", i.getStringExtra("filePath"));
-                setResult(2, intent);
-                finish();
+                if (et1.getText().length() > 0 && et2.getText().length() > 0) {
+                    Intent intent = new Intent();
+                    intent.putExtra("description", et1.getText().toString());
+                    intent.putExtra("price", Double.parseDouble(et2.getText().toString()));
+                    intent.putExtra("filePath", i.getStringExtra("filePath"));
+                    setResult(2, intent);
+                    finish();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
             }
         });
     }
